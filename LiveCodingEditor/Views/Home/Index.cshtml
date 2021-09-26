@@ -1,0 +1,66 @@
+﻿@model CodeEditorFormModel
+
+@{
+    ViewData["Title"] = "Code Live Editor";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to @ViewData["Title"]</h1>
+</div>
+
+<div class="row" style="margin-top: 100px;">
+    <div class="col text-center">
+        <button class="btn btn-primary btn-editor" onclick="runHtml()"> Run </button>
+        @*<button class="btn btn-secondary btn-editor" data-container="body" data-toggle="popover" data-placement="top"
+                    data-content->
+                Check original
+            </button>*@
+        <button class="btn btn-secondary btn-editor" id="checkOriginal"> Check original </button>
+    </div>
+</div>
+
+<form method="post" style="margin-top: 10px;">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <textarea id="htmlCode" asp-for="@Model.CodeText"
+                      style="height: 400px; resize: none;"
+                      class="form-control border-info"
+                      placeholder="Write your HTML code example here...">
+            </textarea>
+
+        </div>
+        <div class="col-md-6">
+            <iframe id="previewHtml" style="height: 400px; resize: none;" class="form-control border-success"> </iframe>
+        </div>
+    </div>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col text-center">
+            <input type="submit" value="Save" class="btn btn-success btn-editor" />
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        function runHtml() {
+            var htmlCode = document.getElementById("htmlCode").value;
+            var frame = document.getElementById("previewHtml").contentWindow.document;
+            frame.open();
+            frame.write(htmlCode);
+            frame.close();
+        };
+    </script>
+
+    <script>
+        var htmlCode = document.getElementById("htmlCode").value;
+        
+    </script>
+
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}
