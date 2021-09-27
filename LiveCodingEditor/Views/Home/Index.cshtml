@@ -1,26 +1,38 @@
 ﻿@model CodeEditorFormModel
 
 @{
-    ViewData["Title"] = "Code Live Editor";
+    ViewData["Title"] = "Live Coding Editor";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to @ViewData["Title"]</h1>
-</div>
+<div class="oleo-font"> Welcome to @ViewData["Title"] </div>
+
+@{
+    if (TempData.ContainsKey(WebConstants.GlobalMessageKey))
+    {
+        <div class="alert alert-success text-center alert-dismissible" role="alert">
+            @TempData[WebConstants.GlobalMessageKey]
+        </div>
+    }
+    if (TempData.ContainsKey(WebConstants.GlobalErrorKey))
+    {
+        <div class="alert alert-danger text-center alert-dismissible" role="alert">
+            @TempData[WebConstants.GlobalErrorKey]
+        </div>
+    }
+}
 
 <div class="row" style="margin-top: 100px;">
-    <div class="col text-center">
+    <div class="col-md-6 text-right">
+        <button class="btn btn-info btn-editor" onclick="copyUrl()"> Copy URL </button>
+    </div>
+    <div class="col-md-6 text-left">
         <button class="btn btn-primary btn-editor" onclick="runHtml()"> Run </button>
-        @*<button class="btn btn-secondary btn-editor" data-container="body" data-toggle="popover" data-placement="top"
-                    data-content->
-                Check original
-            </button>*@
-        <button class="btn btn-secondary btn-editor" id="checkOriginal"> Check original </button>
     </div>
 </div>
 
-<form method="post" style="margin-top: 10px;">
+<form method="post" id="editorForm" style="margin-top: 10px;">
     <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="@Model.QueryType" id="queryType" />
     <div class="row">
         <div class="col-md-6">
             <textarea id="htmlCode" asp-for="@Model.CodeText"
@@ -28,15 +40,17 @@
                       class="form-control border-info"
                       placeholder="Write your HTML code example here...">
             </textarea>
-
         </div>
         <div class="col-md-6">
             <iframe id="previewHtml" style="height: 400px; resize: none;" class="form-control border-success"> </iframe>
         </div>
     </div>
     <div class="row" style="margin-top: 10px;">
-        <div class="col text-center">
-            <input type="submit" value="Save" class="btn btn-success btn-editor" />
+        <div class="col-md-6 text-right">
+            <input type="button" value="Save" class="btn btn-success btn-editor" onclick="saveHtml()" />
+        </div>
+        <div class="col-md-6 text-left">
+            <input type="button" value="Check original" class="btn btn-secondary btn-editor" onclick="checkOriginal()" />
         </div>
     </div>
 </form>
@@ -53,14 +67,36 @@
     </script>
 
     <script>
-        var htmlCode = document.getElementById("htmlCode").value;
-        
+        function checkOriginal() {
+            document.getElementById('queryType').value = 'checkOriginal';
+            document.getElementById('editorForm').submit();
+        }
     </script>
 
     <script>
-        $(function () {
-            $('[data-toggle="popover"]').popover()
-        })
+        function saveHtml() {
+            document.getElementById('queryType').value = 'save';
+            document.getElementById('editorForm').submit();
+        }
     </script>
+
+    <script>
+        function copyUrl(text) {
+            var inputc = document.body.appendChild(document.createElement("input"));
+            inputc.value = window.location.href;
+            inputc.focus();
+            inputc.select();
+            document.execCommand('copy');
+            inputc.parentNode.removeChild(inputc);
+            alert("URL Copied.");
+        }
+    </script>
+
+    <script>
+        $(".alert-dismissible").fadeTo(5000, 500).slideUp(500, function () {
+            $(".alert-dismissible").alert('close');
+        });
+    </script>
+
     <partial name="_ValidationScriptsPartial" />
 }

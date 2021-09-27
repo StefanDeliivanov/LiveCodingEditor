@@ -1,8 +1,10 @@
 ﻿namespace LiveCodingEditor.Services
 {
     using System;
+    using System.Linq;
+    using LiveCodingEditor.Data;
     using LiveCodingEditor.Data.Models;
-    using Data;
+    using LiveCodingEditor.Models;
 
     public class HtmlService : IHtmlService
     {
@@ -13,26 +15,68 @@
             this.data = data;
         }
 
-        public bool Add(string text)
+        public string Add(string text)
         {
-            try
+            var htmlExample = new HtmlExample
             {
-                var example = new HtmlExample
-                {
-                    Id = Guid.NewGuid().ToString(),
-                    CodeText = text,
-                    CreatedOn = DateTime.UtcNow,
-                    ModifiedOn = DateTime.UtcNow
-                };
+                Id = Guid.NewGuid().ToString(),
+                CodeText = text,
+                CreatedOn = DateTime.UtcNow,
+                ModifiedOn = DateTime.UtcNow
+            };
 
-                data.HtmlExamples.Add(example);
-                data.SaveChanges();
+            data.HtmlExamples.Add(htmlExample);
+            data.SaveChanges();
+
+            return htmlExample.Id;
+        }
+
+        public bool CheckOriginal(string text)
+        {
+            var htmlExample = this.data
+                .HtmlExamples
+                .Where(x => x.CodeText == text)
+                .FirstOrDefault();
+
+            if (htmlExample == null)
+            {
+                return true;
             }
-            catch (Exception)
+
+            return false;
+        }
+
+        public string Edit(string id, string text)
+        {
+            var htmlExample = this.data.HtmlExamples.Find(id);
+            htmlExample.CodeText = text;
+            htmlExample.ModifiedOn = DateTime.UtcNow;
+
+            data.SaveChanges();
+
+            return htmlExample.Id;
+        }
+
+        public CodeEditorFormModel GetModelById(string id)
+        {
+            var htmlExample = this.data.HtmlExamples.Find(id);
+
+            return new CodeEditorFormModel
+            {
+                Id = htmlExample.Id,
+                CodeText = htmlExample.CodeText,
+                QueryType = "Save"
+            };
+        }
+
+        public bool IdExists(string id)
+        {
+            var htmlExample = this.data.HtmlExamples.Find(id);
+
+            if (htmlExample == null)
             {
                 return false;
             }
-
             return true;
         }
     }

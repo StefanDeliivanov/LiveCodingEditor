@@ -10,6 +10,9 @@
         public string Id { get; set; }
 
         [Required(ErrorMessage = htmlCodeAreaRequiredErrorMessage)]
+        [StringLength(htmlExampleCodeMaxLength, ErrorMessage = htmlCodeLengthErrorMessage)]
         public string CodeText { get; set; }
+
+        public string QueryType { get; set; }
     }
 }
