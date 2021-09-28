@@ -27,7 +27,7 @@ is included in the repository as a script named 'LiveCodingEditorSqlCreate.sql'
 
 ## **Screenshot**
 **LiveCodingEditor - Home Page**
-![LiveCodingEditor - Home Page](https://imgur.com/yENviTG.jpg)
+![LiveCodingEditor - Home Page](https://imgur.com/a/yENviTG.jpg)
 
 ## :v: **Show your opinion**
 
