@@ -25,9 +25,6 @@ is in `appsettings.json`. If you don't use SQLEXPRESS, you should replace `Serve
 ### 2. Database Backup
 is included in the repository as a script named 'LiveCodingEditorSqlCreate.sql'
 
-## **Screenshot**
-**LiveCodingEditor - Home Page**
-![LiveCodingEditor - Home Page](https://imgur.com/a/yENviTG)
 
 ## :v: **Show your opinion**
 
