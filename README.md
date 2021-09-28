@@ -1,6 +1,12 @@
 # Live Coding Editor
 
 A simple web application for rendering HTML examples and saving them to database :dart:
+The user interface is quite simple and consist of 4 buttons, text area to write and frame to render the HTML.
+Buttons works as follow:
+ - RUN: You can see how your code looks as HTML.
+ - SAVE: Saves your code to the database and creates a shareable link you can send to your friends and coworkers. If you already saved your example the button will instead EDIT    your current database entry.
+ - CHECK ORIGINAL: Checks if the current code in the text area matches an example already existing in the database.
+ - COPY URL: Copies the current URL from your address bar to the clipboard for easier share.
 
 ## :hammer_and_pick: **Built With**
 
